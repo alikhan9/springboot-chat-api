@@ -1,15 +1,17 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.SimpleMessage;
 import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.model.Messages;
 import com.example.demo.model.Users;
 import com.example.demo.repository.MessagesRepository;
 import com.example.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -34,5 +36,25 @@ public class MessagesService {
 
     public List<Messages> getMessagesOfUserContacts(Long id) {
         return repository.getMessagesOfUserContacts(id);
+    }
+
+    public List<Messages> getAllMessages() {
+        return repository.findAll();
+    }
+
+    public void deleteMessages(List<Long> ids) {
+        repository.deleteAllByIdInBatch(ids);
+    }
+
+    public void editMessage(SimpleMessage message) {
+        Users sender = userRepository.findByUsername(message.getSender()).orElseThrow(() -> new BadRequestException("This sender does not exist"));
+        Users receiver = userRepository.findByUsername(message.getReceiver()).orElseThrow(() -> new BadRequestException("This receiver does not exist"));
+        repository.save(new Messages(message.getId(),sender, receiver, message.getMessage(), message.getDate()));
+    }
+
+    public void addMessage(SimpleMessage message) {
+        Users sender = userRepository.findByUsername(message.getSender()).orElseThrow(() -> new BadRequestException("This sender does not exist"));
+        Users receiver = userRepository.findByUsername(message.getReceiver()).orElseThrow(() -> new BadRequestException("This receiver does not exist"));
+        repository.save(new Messages(sender, receiver, Timestamp.from(Instant.now()),message.getMessage()));
     }
 }

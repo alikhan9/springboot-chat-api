@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface GroupsRepository extends JpaRepository<Groups, Long> {
@@ -18,5 +19,8 @@ public interface GroupsRepository extends JpaRepository<Groups, Long> {
     List<Groups> findGroupsByUserid(@Param("id") Long user_id);
     boolean existsByName(String name);
 
-    Groups findByName(String name);
+    @Query( value = "select * from groups where name = :name", nativeQuery = true)
+    Groups findByNameSimple(@Param("name") String name);
+
+    Optional<Groups> findByName(String name);
 }

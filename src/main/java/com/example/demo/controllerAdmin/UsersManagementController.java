@@ -1,5 +1,6 @@
-package com.example.demo.controller;
+package com.example.demo.controllerAdmin;
 
+import com.example.demo.DTO.SimpleUser;
 import com.example.demo.model.Users;
 import com.example.demo.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping( path = "management/api/v1/users")
-//@PreAuthorize("hasAuthority('ADMIN')")
 @RequiredArgsConstructor
 public class UsersManagementController {
 
@@ -32,15 +32,24 @@ public class UsersManagementController {
         userService.updateUser(user);
     }
 
+
+    @PostMapping(path = "/createAdmin")
+    public void createAdminUser(@Valid @RequestBody Users user) {
+        userService.createAdminUser(user);
+    }
+
     @PostMapping (path = "/add")
     public void addUser(@Valid @RequestBody Users user) {
         userService.addUser(user);
     }
 
-    @DeleteMapping (path = "/delete/{userId}")
-    public void deleteUser(@PathVariable("userId") List<Long> ids) {
+    @DeleteMapping (path = "/delete/{usersIds}")
+    public void deleteUsers(@PathVariable("usersIds") List<Long> ids) {
         userService.deleteUser(ids);
     }
 
-
+    @GetMapping (path = "/usernames")
+    public List<SimpleUser> getUsernames() {
+        return userService.getUsernames();
+    }
 }

@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -46,7 +47,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://chatapp.alikhan-zaipoulaiev.fr")
+                        .allowedOrigins("https://chatapp.alikhan-zaipoulaiev.fr","https://admin.alikhan-zaipoulaiev.fr")
                         .allowCredentials(true)
                         .allowedMethods("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS");
             }
@@ -87,17 +88,18 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/v1/users/add").permitAll()
                 .and()
+                .authorizeRequests().antMatchers("/management/**").hasAuthority("ADMIN")
+                .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/groups**","/api/v1/contacts", "/api/v1/groupMembers**", "/api/v1/groupMessages**", "/api/v1/messages**","/api/v1/users**")
                 .hasAuthority("USER")
                 .and()
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
                 .formLogin()
+                .loginPage("https://chatapp.alikhan-zaipoulaiev.fr")
                 .loginProcessingUrl("/login")
                 .usernameParameter("login")
                 .passwordParameter("password")
+                .defaultSuccessUrl("/", true)
                 .successHandler(this::loginSuccessHandler)
                 .failureHandler(this::loginFailureHandler)
                 .and()
@@ -114,7 +116,10 @@ public class SecurityConfig {
             Authentication authentication) throws IOException {
 
         response.setStatus(HttpStatus.OK.value());
-        objectMapper.writeValue(response.getWriter(), "Login successfull");
+        if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")))
+            objectMapper.writeValue(response.getWriter(), "Admin authenticated");
+        else
+            objectMapper.writeValue(response.getWriter(), "User authenticated");
     }
 
     private void loginFailureHandler(

@@ -41,7 +41,7 @@ public class ChatService {
 
     public GroupMessages sendGroupMessage(GroupMessages message) {
         message.setDate(Timestamp.from(Instant.now()));
-        Groups group = groupsRepository.findByName(message.getReceiver().getName());
+        Groups group = groupsRepository.findByNameSimple(message.getReceiver().getName());
         message.setReceiver(group);
         groupMessagesService.addGroupMessage(message);
         simpMessagingTemplate.convertAndSend("/chatroom/" + message.getReceiver().getId(),message);

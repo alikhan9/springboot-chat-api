@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Contacts;
 import com.example.demo.model.Users;
-import com.example.demo.model.UsersUsernameOnly;
+import com.example.demo.DTO.UsersUsernameOnly;
 import com.example.demo.service.ContactsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

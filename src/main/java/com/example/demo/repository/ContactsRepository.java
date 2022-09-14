@@ -21,4 +21,5 @@ public interface ContactsRepository extends JpaRepository<Contacts, ContactsId> 
     @Transactional
     @Query(value = "delete from contacts where (id_user1 = :userId and id_user2 = :contactId) or (id_user2 = :userId and id_user1 = :contactId)", nativeQuery = true)
     int deleteContact(@Param("userId") Long id, @Param("contactId") Long id1);
+
 }

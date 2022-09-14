@@ -28,4 +28,11 @@ public class Messages {
 
     private String message;
     private Timestamp date;
+
+    public Messages(Users sender, Users receiver, Timestamp date, String message) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.date = date;
+        this.message = message;
+    }
 }

@@ -16,9 +16,9 @@ import java.util.Set;
 @Table
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Setter
+@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class Users implements UserDetails {
@@ -38,11 +38,13 @@ public class Users implements UserDetails {
 
     private LocalDate dateofbirth;
 
+    private Boolean is_admin;
 
     @NotBlank(message = "Password may not be null")
     @JsonProperty( value = "password", access = JsonProperty.Access.WRITE_ONLY)
     @ToString.Exclude
     private String password;
+
 
     public Users(String username, String first_name, String last_name, String email, LocalDate dateofbirth, String password) {
         this.username = username;
@@ -58,6 +60,8 @@ public class Users implements UserDetails {
     public Set<GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("USER"));
+        if(is_admin)
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
         return authorities;
     }
 

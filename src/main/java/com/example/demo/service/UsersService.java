@@ -1,13 +1,12 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.SimpleUser;
 import com.example.demo.config.PasswordConfig;
 import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.model.Users;
 import com.example.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class UsersService {
     private final PasswordConfig passwordEncoder = new PasswordConfig();
 
     public List<Users> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.getAllUsers();
     }
 
     public void updateUser(Users user) {
@@ -43,6 +42,7 @@ public class UsersService {
         if (userRepository.existsByUsername(user.getUsername()))
             throw new BadRequestException("User with username " + user.getUsername() + " already exists");
         user.setPassword(passwordEncoder.passwordEncoder().encode(user.getPassword()));
+        user.setIs_admin(false);
         userRepository.save(user);
     }
 
@@ -61,5 +61,19 @@ public class UsersService {
 
     public List<String> getUsersByUsername(Long userId, String username) {
         return userRepository.getAllUsersContactsByUsername(userId, username);
+    }
+
+    public void createAdminUser(Users user) {
+        if ( userRepository.existsByEmail(user.getEmail()))
+            throw new BadRequestException("User with email " + user.getEmail() + " already exists");
+        if (userRepository.existsByUsername(user.getUsername()))
+            throw new BadRequestException("User with username " + user.getUsername() + " already exists");
+        user.setPassword(passwordEncoder.passwordEncoder().encode(user.getPassword()));
+        user.setIs_admin(true);
+        userRepository.save(user);
+    }
+
+    public List<SimpleUser> getUsernames() {
+        return userRepository.getUsernames();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.DTO.SimpleUser;
 import com.example.demo.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,10 @@ public interface UserRepository  extends JpaRepository<Users, Long> {
             "and username ilike %:username% and id <> :userId"
             , nativeQuery = true)
     List<String> getAllUsersContactsByUsername(@Param("userId") Long username, @Param("username") String s);
+
+    @Query( value = "select * from users where is_admin = false", nativeQuery = true)
+    List<Users> getAllUsers();
+
+    @Query(value = "select id, username from users order by username", nativeQuery = true)
+    List<SimpleUser> getUsernames();
 }

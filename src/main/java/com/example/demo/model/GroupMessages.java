@@ -38,4 +38,10 @@ public class GroupMessages {
         date = Timestamp.from(Instant.now());
     }
 
+    public GroupMessages(String message, Users sender, Groups receiver, Timestamp date) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
+        this.date = date;
+    }
 }

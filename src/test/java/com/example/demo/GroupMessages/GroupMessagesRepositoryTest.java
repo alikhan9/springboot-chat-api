@@ -68,8 +68,8 @@ public class GroupMessagesRepositoryTest {
         groupsRepository.save(groupTemp);
         groupsRepository.save(group2Temp);
 
-        Groups group = groupsRepository.findByName(groupTemp.getName());
-        Groups group2 = groupsRepository.findByName(group2Temp.getName());
+        Groups group = groupsRepository.findByNameSimple(groupTemp.getName());
+        Groups group2 = groupsRepository.findByNameSimple(group2Temp.getName());
 
         for( int i = 0; i < 8; i++ ) {
             if(i%2 == 0) {
@@ -121,8 +121,8 @@ public class GroupMessagesRepositoryTest {
         groupsRepository.save(groupTemp);
         groupsRepository.save(group2Temp);
 
-        Groups group = groupsRepository.findByName(groupTemp.getName());
-        Groups group2 = groupsRepository.findByName(group2Temp.getName());
+        Groups group = groupsRepository.findByNameSimple(groupTemp.getName());
+        Groups group2 = groupsRepository.findByNameSimple(group2Temp.getName());
 
         for( int i = 0; i < 8; i++ ) {
             if(i%2 == 0) {
@@ -174,8 +174,8 @@ public class GroupMessagesRepositoryTest {
         groupsRepository.save(groupTemp);
         groupsRepository.save(group2Temp);
 
-        Groups group = groupsRepository.findByName(groupTemp.getName());
-        Groups group2 = groupsRepository.findByName(group2Temp.getName());
+        Groups group = groupsRepository.findByNameSimple(groupTemp.getName());
+        Groups group2 = groupsRepository.findByNameSimple(group2Temp.getName());
 
         for( int i = 0; i < 8; i++ ) {
             if(i%2 == 0) {
@@ -227,8 +227,8 @@ public class GroupMessagesRepositoryTest {
         groupsRepository.save(groupTemp);
         groupsRepository.save(group2Temp);
 
-        Groups group = groupsRepository.findByName(groupTemp.getName());
-        Groups group2 = groupsRepository.findByName(group2Temp.getName());;
+        Groups group = groupsRepository.findByNameSimple(groupTemp.getName());
+        Groups group2 = groupsRepository.findByNameSimple(group2Temp.getName());;
 
         for( int i = 0; i < 8; i++ ) {
             if(i%2 == 0) {
